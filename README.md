@@ -121,7 +121,7 @@ LES2/
         n = 3, 
         progress = T)
     ```
-    3. Generate pairwise similarity score matrix. $M$ square matrix, $M = corpus\_length$
+    3. Generate pairwise similarity score matrix. $M$ square matrix, $M = corpus.length$
     ```R
     n3_comparisons_117_directional_s <- textreuse::pairwise_compare(
         n3_corpus_117, # corpus
