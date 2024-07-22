@@ -130,7 +130,10 @@ LES2/
         directional = T) # do bidirectional comparison, because our compare fn is not commutative (r_of_m(a,b) != r_of_m(b,a))
 
     # more on ratio_of_matches, from textreuse docs:
-    # finds the ratio between the number of items in b that are also in a and the total number of items in b. Note that this similarity measure is directional: it measures how much b borrows from a, but says nothing about how much of a borrows from b.
+    # finds the ratio between the number of items in b that are also in a and the 
+    # total number of items in b. Note that this similarity measure is
+    # directional: it measures how much b borrows from a, but says  
+    # nothing about how much of a borrows from b.
     # https://cran.r-project.org/web/packages/textreuse/textreuse.pdf, 17.
     ```
     4. Get candidates from all-to-all matrix. $(M^2 - M)\times3$ comparisons
