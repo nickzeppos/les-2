@@ -1,0 +1,30 @@
+Scrape the bills (Kelsey)
+
+Unzip everything within the bills
+Via command line code under the 117 folder
+find . -name "*.zip" | while read filename; do unzip -o -d "$(dirname "$filename")" "$filename"; done;
+
+****FOR 112, THE FILES ARE ALL NAMED DOCUMENT.HTML; HAVE TO RUN THE SCRIPT RENAME112.SH BEFORE DOING NEXT STEP
+
+Move all the htm files to a separate folder. Use this command (under the 117 folder) for each bill type folder (too big to do all at once):
+cp s/*/text-versions/*/*/html/*.htm ~/Dropbox/LES2/bill_text_raw/117_1
+cp hr/*/text-versions/*/*/html/*.htm ~/Dropbox/LES2/bill_text_raw/117_1
+
+FOR 112
+cp hr/*/text-versions/*/*/*.htm ~/Dropbox/LES2/bill_text_raw/112_1
+
+Get the names of the bill files in correct format for bill preprocessing with the script:
+0_file_rename.R
+
+Convert files to text files. Use this command (under the 117_1 folder):
+for file in *.htm; do html2text "$file" > "$file.txt"; done
+
+Remove the .htm files from 117_1 folder:
+rm *.htm
+
+Remove the .htm.txt extension with the script:
+0.1_file_rename.R
+
+Run bills through Denny Wilkerson replication code to preprocess (billStepsCode/1_cleaning.R)
+
+Run the bills through similarity code (billStepsCode/2_all_against_all_10112021.R)

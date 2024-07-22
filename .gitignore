@@ -1,0 +1,5 @@
+# ignore everything in LES2.mini
+LES2.mini/*
+
+# except billStepsCode
+!LES2.mini/billStepsCode
