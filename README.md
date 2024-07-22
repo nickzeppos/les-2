@@ -1,7 +1,7 @@
 **STEPS**  
 1. [Fetch bill data](#fetch-bill-data)
 2. [Copy `.htm` files over](#copy-htm-files-over)
-3. [Renaming files](#renaming-files)
+3. [Rename files](#rename-files)
 4. [Preprocess](#preprocess)
 5. [Process](#process)
 6. [Questions](#questions)
@@ -26,7 +26,7 @@ LES2/
 **Special case for the 112th where we have to run `rename112.sh`**
 - Copy text files over to new dirs: `{congressNumber}/ -> {congressNumber}_1/`
 
-### Renaming files
+### Rename files
 - 2 R scripts: `0.1_file_rename.R` `0_file_rename.R` 
 - 1 bash command using `html2text`
 - in order, something like: `0_ > html2text > 0.1_`
@@ -46,7 +46,7 @@ LES2/
     1. drop the `.htm` files
 ### Preprocess
 - script name - `1_cleaning.R`
-- Is the preprocessing treatment from Casas, Denny, Wilkerson Legislative Hitchhikers paper
+- Is the preprocessing treatment from Casas, Denny, Wilkerson Legislative Hitchhikers paper?
 - Does ~ this:
     1. Read in
     2. Only care about certain bill versions
