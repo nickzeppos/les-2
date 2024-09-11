@@ -114,6 +114,10 @@ candidates <- pairwise_candidates(n3_comparisons_117_directional_s, directional=
 
 candidates$billID_1 <- gsub('(.*)-\\w+', '\\1', candidates$a)
 candidates$billID_2 <- gsub('(.*)-\\w+', '\\1', candidates$b)
+
+# 117
+# 117 - hr - 1 - ih
+# 117 - hr - 1 - enr
 candidates$sameBillDiffVersion <- ifelse(candidates$billID_1==candidates$billID_2, 1, 0)
 
 
@@ -123,6 +127,12 @@ save(n3_pairs_112_directional, file="~/Dropbox/LES2/similarity_measure/n3_pairs_
 #########################################
 # Turn into paired comparisons
 #########################################
+
+
+# bill_id_1, bill_id_2, sim score
+# (M^2) - M x 3 
+
+# 117 - hr - 1 ih, 117 - hr - 1 enr, 
 
 start.time <- Sys.time()
 M2 <- n3_comparisons_117 %>%
@@ -141,12 +151,14 @@ n3_pairs_112$billID_1 <- gsub('(.*)-\\w+', '\\1', n3_pairs_112$bill_id_1)
 n3_pairs_112$billID_2 <- gsub('(.*)-\\w+', '\\1', n3_pairs_112$bill_id_2)
 n3_pairs_112$sameBillDiffVersion <- ifelse(n3_pairs_112$billID_1==n3_pairs_112$billID_2, 1, 0)
 
-#save(n3_pairs_112, file="~/Dropbox/LES2/similarity_measure/n3_ALLpairs_112_10112021.RData")
+
+save(n3_pairs_112, file="~/Dropbox/LES2/similarity_measure/n3_ALLpairs_112_10112021.RData")
 
 
 load("~/Dropbox/LES2/similarity_measure/n3_ALLpairs_112_10112021.RData")
 aggregate(value ~ sameBillDiffVersion, data = n3_pairs_112, FUN = mean)
 
+# See if sim scores > .5
 different <- n3_pairs_112[n3_pairs_112$sameBillDiffVersion ==0,]
 diffHigh <- different[different$value > .5,]
 

@@ -82,7 +82,7 @@ names(docs) <- c116$bill_id
 #########################################
 # Tokenization
 #########################################
-# Tokenize into 3-grams
+# Tokenize into 5-grams
 n5_corpus_116 <- textreuse::TextReuseCorpus(text=docs, tokenizer = textreuse::tokenize_ngrams, 
                                             n = 5, progress = T)
 
@@ -117,6 +117,9 @@ names.data <- rownames(n5_comparisons_116_directional_hr)
 step <- apply(as.matrix(names.data), 1, 
               FUN=function(x){strsplit(x, split="-")[[1]][4]})
 table(step)
+
+
+# We only end up comparing ENR -> corresponding introduced version, i.e. r_of_m(enr, ih), r_of_m(enr, is)
 by_type <- list('ih' = which(step == "IH"),
                 'is' = which(step == "IS"),
                 'enr' = which(step == "ENR"))
@@ -154,3 +157,25 @@ hist(candidatesHigh_enr$value, plot=T)
 candidates_n5_116_HR_S <- candidatesHigh_enr
 save(candidates_n5_116_HR_S, file="~/Dropbox/LES2/similarity_measure/candidates_n5_116_HR_S_combo.RData")
 write.csv(candidates_n5_116_HR_S, file="~/Dropbox/LES2/similarity_measure/candidates_n5_116_HR_S_combo.csv")
+
+
+# Ask A&C if they need original bill Var1 & 2 cols rather than derived key vals
+# I don't know what X is, but it can't be too important. Mary is going to look into it and will tell me if it's important.
+
+# | index 
+# | Var2 (billKey) 
+# | Var1 (billKey) 
+# | X (?) 
+# | value (similarity score) 
+# | billID_1 
+# | billID_2 
+# | sameBillDiffVersion 
+# | type_a (bill version) 
+# | type_b (billVersion) 
+# | numWords_bill1 
+# | numWords_bill2
+
+
+
+
+

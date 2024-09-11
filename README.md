@@ -142,5 +142,8 @@ LES2/
 
 ### Questions
 - What is the rest of the code in `2_all_against_all_10112021.R` for?  
+
 - What's the intended output?
 - What's specifically wrong with the 112th? Is it just the naming convention thing that `rename112.sh` fixes?
+    - The current data is a rescrape of the 112th, and is still having problems.
+    -  
