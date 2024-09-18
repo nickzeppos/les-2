@@ -3,3 +3,6 @@ LES2.mini/*
 
 # except billStepsCode
 !LES2.mini/billStepsCode
+
+# data
+data/*
