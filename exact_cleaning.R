@@ -10,7 +10,7 @@ source("00-functions.R")
 
 
 # consts
-congress <- 117
+congress <- 112
 root_path <- getwd()
 cache_path <- paste0(root_path, "/data")
 bill_text_path <- paste0(cache_path, "/bill_text/")
@@ -46,8 +46,6 @@ tokens_bottom <- c(
     "hr as"
 )
 
-print(top_statement_unigrams)
-print(tokens_bottom)
 
 bills_list <- list.files(raw_path, recursive = T, full.names = T)
 
@@ -118,16 +116,14 @@ for (bill in bills_list) {
             # - exporting the clean version of the text of this bill version
             cleaned <- doc_clean2
 
-            # write.table(
-            #     cleaned,
-            #     file = paste0(clean_path, "/", basename(bill)),
-            #     row.names = FALSE, col.names = FALSE, quote = FALSE
-            # )
+            write.table(
+                cleaned,
+                file = paste0(clean_path, "/", basename(bill)),
+                row.names = FALSE, col.names = FALSE, quote = FALSE
+            )
         },
         error = function(e) {
             message(paste("Error with bill:", bill, ":", e$message))
         }
     )
-    print(out)
-    break
 }

@@ -1,4 +1,5 @@
 library(diffobj)
+library(textreuse)
 options(warn = -1)
 
 # utils
@@ -13,28 +14,34 @@ compare_and_print <- function(obj1, obj2, style = diffobj::StyleAnsi()) {
     }
 }
 
-# I generated cleaned bill text files with 07-supporting-info.A.R
-# Am now going to comp the cleaned bill text files with the example cleans provided in the replication repo
-ex_clean_103hr1ih <- readLines("replication/from_dataverse/CLEAN-103-HR-1-IH.txt")
-ex_clean_103hr2rh <- readLines("replication/from_dataverse/CLEAN-103-HR-2-RH.txt")
+#
+from_dropbox_enr_1319 <- readLines("data/117_testing/117-HR-1319-ENR")
+my_enr_1319 <- readLines("data/cleaned_bill_text/117/BILLS-117hr1319enr.txt")
+from_dropbox_ih_1609 <- readLines("data/117_testing/117-HR-1609-IH")
+my_ih_1609 <- readLines("data/cleaned_bill_text/117/BILLS-117hr1609ih.txt")
+from_dropbox_ih_1668 <- readLines("data/117_testing/117-HR-1668-IH")
+my_ih_1668 <- readLines("data/cleaned_bill_text/117/BILLS-117hr1668ih.txt")
+from_dropbox_ih_1682 <- readLines("data/117_testing/117-HR-1682-IH")
+my_ih_1682 <- readLines("data/cleaned_bill_text/117/BILLS-117hr1682ih.txt")
 
-my_clean_103hr1ih <- readLines("replication/clean/103-HR-1-IH.txt")
-my_clean_103hr2rh <- readLines("replication/clean/103-HR-2-RH.txt")
-
-# Let's take a look at the bill they use in their appendix, though: 111-HR-408-IH.
-# First 75 words of the appendix:
-from_appendix <- "cited southern nevada limited transition area conveyance notwithstanding federal land policy management et seq request city without consideration subject valid existing rights convey city right interest united transition area use land nonresidential development general conveyance city city sell lease otherwise convey portion portions transition area purposes nonresidential development method sale general sale lease conveyance land competitive bidding process fair market value land sold leased otherwise conveyed less fair market value compliance charter except paragraphs city"
-
-# Now let's load in and slice the first 497 from the bill cleaned by 07-supporting-info-A.R
-my_clean_111hr408ih <- readLines("replication/clean/111-HR-408-IH.txt")
-from_me <- paste(my_clean_111hr408ih[1], collapse = " ")
-words <- unlist(strsplit(from_me, "\\s+"))
-sliced <- paste(words[1:100], collapse = " ")
+# five grams
+from_dropbox_enr_1319_n5 <- textreuse::tokenize_ngrams(from_dropbox_enr_1319, n = 5)
+my_enr_1319_n5 <- textreuse::tokenize_ngrams(my_enr_1319, n = 5)
+from_dropbox_ih_1609_n5 <- textreuse::tokenize_ngrams(from_dropbox_ih_1609, n = 5)
+my_ih_1609_n5 <- textreuse::tokenize_ngrams(my_ih_1609, n = 5)
+from_dropbox_ih_1668_n5 <- textreuse::tokenize_ngrams(from_dropbox_ih_1668, n = 5)
+my_ih_1668_n5 <- textreuse::tokenize_ngrams(my_ih_1668, n = 5)
+from_dropbox_ih_1682_n5 <- textreuse::tokenize_ngrams(from_dropbox_ih_1682, n = 5)
+my_ih_1682_n5 <- textreuse::tokenize_ngrams(my_ih_1682, n = 5)
 
 
-print("Comparing 103-HR-1-IH")
-compare_and_print(ex_clean_103hr1ih, my_clean_103hr1ih)
-print("Comparing 103-HR-2-RH")
-compare_and_print(ex_clean_103hr2rh, my_clean_103hr2rh)
-print("Comparing 111-HR-408-IH")
-compare_and_print(from_appendix, sliced)
+# compare
+textreuse::ratio_of_matches(from_dropbox_enr_1319_n5, from_dropbox_ih_1609_n5)
+textreuse::ratio_of_matches(from_dropbox_enr_1319_n5, my_ih_1609_n5)
+textreuse::ratio_of_matches(my_enr_1319_n5, from_dropbox_ih_1609_n5)
+textreuse::ratio_of_matches(my_enr_1319_n5, my_ih_1609_n5)
+
+textreuse::ratio_of_matches(from_dropbox_enr_1319_n5, from_dropbox_ih_1682_n5)
+textreuse::ratio_of_matches(from_dropbox_enr_1319_n5, my_ih_1682_n5)
+textreuse::ratio_of_matches(my_enr_1319_n5, from_dropbox_ih_1682_n5)
+textreuse::ratio_of_matches(my_enr_1319_n5, my_ih_1682_n5)

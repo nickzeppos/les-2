@@ -6,3 +6,6 @@ LES2.mini/*
 
 # data
 data/*
+
+# pairwise outs
+pairwise_comparisons/*

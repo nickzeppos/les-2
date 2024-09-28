@@ -37,6 +37,8 @@ library(dplyr)
 library(stringr)
 source("00-functions.R")
 
+
+
 # CONSTANTS & PATHS
 # ===============================================================================
 # - path to where the raw bills are located

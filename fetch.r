@@ -12,27 +12,31 @@ suppressPackageStartupMessages({
     library(xml2)
     library(purrr)
 })
-# setwd above src
-setwd(dirname(getwd()))
 
 
 # consts
 bill_types <- c("s", "hr")
 bill_versions <- c("ih", "is", "enr")
-congress <- "117"
+congress <- "112"
 base_url <- "https://www.govinfo.gov"
 root_path <- getwd()
 cache_path <- paste0(root_path, "/data")
 config_path <- paste0(root_path, "/config.json")
 sitemaps_path <- paste0(cache_path, "/govinfo_sitemaps")
 bill_text_path <- paste0(cache_path, "/bill_text/", congress)
-log_path <- paste0(bill_text_path, "/log.txt")
 
+
+# print consts
+print(paste("Root path:", root_path))
+print(paste("Cache path:", cache_path))
+print(paste("Config path:", config_path))
+print(paste("Sitemaps path:", sitemaps_path))
+print(paste("Bill text path:", bill_text_path))
 
 # utils
-extract_urls <- function(xml_data) {
-    ns <- xml_ns(xml_data)
-    xml_find_all(xml_data, ".//d1:loc", ns) %>%
+get_urls_from_xml <- function(xml_data) {
+    namespace <- xml_ns(xml_data)
+    xml_find_all(xml_data, ".//d1:loc", namespace) %>%
         xml_text()
 }
 
@@ -61,7 +65,7 @@ filter_urls <- function(url) {
 }
 
 curl_html2text <- function(url, path) {
-    cmd <- paste("bash -c", shQuote(paste("curl --max-time 10", url, "| html2text >", shQuote(path))))
+    cmd <- paste("bash -c", shQuote(paste("curl -s --max-time 10", url, "| html2text >", shQuote(path))))
     system(cmd)
 }
 
@@ -107,7 +111,7 @@ site_map_urls <-
     unname()
 
 xmls <- map(site_map_urls, fetch_and_save_sitemap)
-all_urls <- map(xmls, extract_urls) %>%
+all_urls <- map(xmls, get_urls_from_xml) %>%
     # list_c is flatten func
     list_c()
 
@@ -115,22 +119,34 @@ filtered_urls <- map(all_urls, filter_urls) %>%
     list_c() %>%
     all_urls[.]
 
-# diff filtered by log
-processed <- readLines(log_path)
+# diff filtered by existing files
+processed <- list.files(bill_text_path, pattern = ".txt") %>%
+    # drop suffix
+    str_remove(".txt") %>%
+    # add url
+    sapply(function(file) {
+        paste0(base_url, "/app/details/", file)
+    })
+
+# diff filtered by existing files
 remaining <- setdiff(filtered_urls, processed)
+
+print(paste("Total URLs:", length(filtered_urls)))
+print(paste("Processed URLs:", length(processed)))
+print(paste("Remaining URLs:", length(remaining)))
 
 # fetch and save unprocessed portion
 # sleep 0.1s between requests
-# sleep 2s every 100 requests
+# sleep 2s every 500 requests
 for (i in seq_along(remaining)) {
     r <- remaining[i]
     bill_key <- strsplit(r, "/")[[1]][6]
     url <- paste0(base_url, "/content/pkg/", bill_key, "/html/", bill_key, ".htm")
     file_path <- paste0(bill_text_path, "/", bill_key, ".txt")
     curl_html2text_safe(url, file_path)
-    cat(url, "\n", file = log_path, append = TRUE)
     Sys.sleep(0.1)
-    if (i %% 100 == 0) {
+    if (i %% 500 == 0) {
+        print(paste("Sleeping for 2s after", i, "requests"))
         Sys.sleep(2)
     }
 }

@@ -91,6 +91,8 @@ clean_file <- function(file_path) {
 
 
 
+
+
 # main
 clean_congress <- function(congress) {
     # get all cache/bill_text/congress/ files
