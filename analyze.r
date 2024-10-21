@@ -2,7 +2,7 @@ library(dplyr)
 library(reshape2)
 
 # consts
-congress <- 112
+congress <- 113
 pwc_path <- paste0(getwd(), "/pairwise_comparisons/", congress)
 fl <- list.files(pwc_path, full.names = TRUE)
 

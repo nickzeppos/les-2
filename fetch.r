@@ -17,7 +17,7 @@ suppressPackageStartupMessages({
 # consts
 bill_types <- c("s", "hr")
 bill_versions <- c("ih", "is", "enr")
-congress <- "112"
+congress <- "113"
 base_url <- "https://www.govinfo.gov"
 root_path <- getwd()
 cache_path <- paste0(root_path, "/data")
@@ -119,6 +119,7 @@ filtered_urls <- map(all_urls, filter_urls) %>%
     list_c() %>%
     all_urls[.]
 
+
 # diff filtered by existing files
 processed <- list.files(bill_text_path, pattern = ".txt") %>%
     # drop suffix
@@ -128,6 +129,9 @@ processed <- list.files(bill_text_path, pattern = ".txt") %>%
         paste0(base_url, "/app/details/", file)
     })
 
+
+# write filtered_urls to file
+writeLines(filtered_urls, paste0(cache_path, "/filtered_urls.txt"))
 # diff filtered by existing files
 remaining <- setdiff(filtered_urls, processed)
 

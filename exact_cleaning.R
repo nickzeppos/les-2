@@ -10,7 +10,7 @@ source("00-functions.R")
 
 
 # consts
-congress <- 112
+congress <- 113
 root_path <- getwd()
 cache_path <- paste0(root_path, "/data")
 bill_text_path <- paste0(cache_path, "/bill_text/")
@@ -50,9 +50,19 @@ tokens_bottom <- c(
 bills_list <- list.files(raw_path, recursive = T, full.names = T)
 
 for (bill in bills_list) {
-    doc <- suppressWarnings(paste(qdap::clean(readLines(bill)),
-        collapse = "\n"
-    ))
+    # Debugging: Print the bill path
+    print(paste("Processing bill:", bill))
+
+    # Check if the file exists and can be read
+    if (!file.exists(bill)) {
+        print(paste("Error: File does not exist:", bill))
+        next
+    }
+
+    bill_readLines <- readLines(bill)
+    doc <- paste(qdap::clean(bill_readLines), collapse = "\n")
+
+    print(substr(doc, 1, 50))
     out <- tryCatch(
         {
             # - removing amendments/edits to the text. The text files provided by
@@ -60,6 +70,7 @@ for (bill in bills_list) {
             #   drafting the new bill version (e.g. <DELETED> .... </DELETED>). In this
             #   step we get rid of the <DELETED> marks as well as the text in between
             text <- rm_amendments(doc)
+
 
             sections <- get_section_titles(text) %>%
                 mutate(
@@ -109,12 +120,15 @@ for (bill in bills_list) {
             # - get rid of line break markers if they are still there
             doc_clean1 <- qdap::clean(gsub("\n", " ", processed_unigrams))
 
+
             # - get rid of a common procedural statments that often appears at the
             #   top of the bill
             doc_clean2 <- gsub(top_statement_unigrams, "", doc_clean1)
 
+
             # - exporting the clean version of the text of this bill version
             cleaned <- doc_clean2
+
 
             write.table(
                 cleaned,

@@ -7,7 +7,7 @@ suppressPackageStartupMessages({
 })
 
 # consts
-congress <- 112
+congress <- 113
 root_path <- getwd()
 cache_path <- paste0(root_path, "/data")
 cleaned_bill_text_path <- paste0(cache_path, "/cleaned_bill_text/", congress)
