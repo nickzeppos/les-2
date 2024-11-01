@@ -9,3 +9,6 @@ data/*
 
 # pairwise outs
 pairwise_comparisons/*
+
+# env
+.env

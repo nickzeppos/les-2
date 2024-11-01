@@ -6,11 +6,10 @@ suppressPackageStartupMessages({
 })
 
 # imports
-source("00-functions.R")
 
 
 # consts
-congress <- 113
+congress <- 108
 root_path <- getwd()
 cache_path <- paste0(root_path, "/data")
 bill_text_path <- paste0(cache_path, "/bill_text/")
@@ -62,7 +61,7 @@ for (bill in bills_list) {
     bill_readLines <- readLines(bill)
     doc <- paste(qdap::clean(bill_readLines), collapse = "\n")
 
-    print(substr(doc, 1, 50))
+    # print(substr(doc, 1, 50))
     out <- tryCatch(
         {
             # - removing amendments/edits to the text. The text files provided by

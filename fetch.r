@@ -16,7 +16,7 @@ suppressPackageStartupMessages({
 
 # consts
 bill_types <- c("s", "hr")
-bill_versions <- c("ih", "is", "enr")
+bill_versions <- c("enr")
 congress <- "113"
 base_url <- "https://www.govinfo.gov"
 root_path <- getwd()
@@ -49,7 +49,7 @@ fetch_and_save_sitemap <- function(url) {
     return(xml)
 }
 
-filter_urls <- function(url) {
+filter_bill_urls <- function(url) {
     split <- strsplit(url, "-")[[1]][2]
     parts <- str_match(split, "(\\d+)(\\D+)(\\d+)(\\D+)")
 
@@ -115,7 +115,7 @@ all_urls <- map(xmls, get_urls_from_xml) %>%
     # list_c is flatten func
     list_c()
 
-filtered_urls <- map(all_urls, filter_urls) %>%
+filtered_urls <- map(all_urls, filter_bill_urls) %>%
     list_c() %>%
     all_urls[.]
 
@@ -131,7 +131,7 @@ processed <- list.files(bill_text_path, pattern = ".txt") %>%
 
 
 # write filtered_urls to file
-writeLines(filtered_urls, paste0(cache_path, "/filtered_urls.txt"))
+
 # diff filtered by existing files
 remaining <- setdiff(filtered_urls, processed)
 

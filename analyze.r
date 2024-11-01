@@ -2,8 +2,8 @@ library(dplyr)
 library(reshape2)
 
 # consts
-congress <- 113
-pwc_path <- paste0(getwd(), "/pairwise_comparisons/", congress)
+congress <- 108
+pwc_path <- paste0(getwd(), "/pairwise_comparisons/non_introduced/", congress)
 fl <- list.files(pwc_path, full.names = TRUE)
 
 # Initialize an empty list to store all comparisons
